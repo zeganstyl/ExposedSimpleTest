@@ -21,17 +21,21 @@ fun main() {
     val url =
         "jdbc:mysql://10.0.0.21:3306/test?user=root&password=password&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false"
     val database = Database.connect(url, user = "root", password = "password")
-    val connection = DriverManager.getConnection(url)
+    // warm
+    resetTable(database)
+    testNative(DriverManager.getConnection(url), log = false) //insert time: 11086ms ,select time: 4312ms
 
     resetTable(database)
-    testNative(connection) //insert time: 11086ms ,select time: 4312ms
+    testNative(DriverManager.getConnection(url)) //insert time: 11086ms ,select time: 4312ms
 
     resetTable(database)
-    testNative2(connection)// insert time: 9324ms  select time: 2529ms
+    testNative2(DriverManager.getConnection(url))// insert time: 9324ms  select time: 2529ms
 
     resetTable(database)
     testExposed(database) // insert time: 37041ms ,select time: 27878ms
 
+    resetTable(database)
+    testExposed2(database) // insert time: 37041ms ,select time: 27878ms
 }
 
 fun resetTable(database: Database) {
@@ -43,18 +47,19 @@ fun resetTable(database: Database) {
 
 fun testExposed(database: Database) {
     var sw = Stopwatch.createStarted()
-    repeat(10000) { i ->
-        transaction(database) {
+    transaction(database) {
+        repeat(10000) { i ->
             TestLongTable.insert {
                 it[key] = i
                 it[value] = true
             }
+            commit()
         }
     }
     println("exposed > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
     sw = Stopwatch.createStarted()
-    repeat(10000) { i ->
-        transaction(database) {
+    transaction(database) {
+        repeat(10000) { i ->
             TestLongTable.select {
                 TestLongTable.key eq i
             }.firstOrNull()?.get(TestLongTable.value)
@@ -64,24 +69,58 @@ fun testExposed(database: Database) {
 
 }
 
-fun testNative(connection: Connection) {
+fun testNative(connection: Connection, log: Boolean = true) {
     connection.autoCommit = false
     var sw = Stopwatch.createStarted()
     repeat(10000) {
-        connection.createStatement().execute("INSERT INTO test_table (`key`,`value`) VALUES ($it, true)")
+        val prepareStatement = connection.prepareStatement("INSERT INTO test_table (`key`,`value`) VALUES (?, ?)")
+        prepareStatement.apply {
+            setInt(1, it)
+            setBoolean(2, true)
+        }.executeUpdate()
+        prepareStatement.close()
         connection.commit()
     }
-    println("native > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    if (log)
+        println("native > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
     sw = Stopwatch.createStarted()
     repeat(10000) {
-        connection.createStatement().executeQuery("SELECT * FROM `test_table` WHERE `key`=$it").apply {
+        val prepareStatement = connection.prepareStatement("SELECT * FROM `test_table` WHERE `key`=?")
+        prepareStatement.setInt(1, it)
+        prepareStatement.executeQuery().apply {
             if (next()) {
                 getBoolean("value")
             }
+            close()
         }
+        prepareStatement.close()
         connection.commit()
     }
-    println("native > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    if (log)
+        println("native > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+
+}
+
+fun testExposed2(database: Database) {
+    var sw = Stopwatch.createStarted()
+    transaction(database) {
+        repeat(10000) {
+            exec("INSERT INTO test_table (`key`,`value`) VALUES ($it, true)")
+        }
+    }
+    println("exposed2 > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    sw = Stopwatch.createStarted()
+    transaction(database) {
+        repeat(10000) {
+            exec("SELECT * FROM `test_table` WHERE `key`=$it") {
+                if (it.next()) {
+                    it.getBoolean("value")
+                }
+            }
+
+        }
+    }
+    println("exposed2 > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
 
 }
 
