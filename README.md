@@ -1,11 +1,43 @@
-# ExposedSimpleTest
-简单的性能测试
+# Simple performance test: Exposed vs plain JDBC vs Hibernate
 
-原生JDBC 关闭自动提交 <br/>
-testNative(connection) //insert time: -, elect time: -
+# 1
+- testNativeAutoCommitFalse > insert time: 355ms
+- testNativeAutoCommitFalse > select time: 276ms
+- testNativeAutoCommitTrue > insert time: 487ms
+- testNativeAutoCommitTrue > select time: 449ms
+- testExposedDsl > insert time: 3620ms
+- testExposedDsl > select time: 2481ms
+- testExposedTransactionOnly > insert time: 1367ms
+- testExposedTransactionOnly > select time: 1444ms
+- testExposedDao > insert time: 2529ms
+- testExposedDao > select time: 1629ms
+- hibernate dao > insert time: 2052ms
+- hibernate dao > select time: 712ms
 
-原生JDBC 开启自动提交<br/>
-testNative2(connection) // insert time: -, select time: -
+# 2
+- testNativeAutoCommitFalse > insert time: 378ms
+- testNativeAutoCommitFalse > select time: 244ms
+- testNativeAutoCommitTrue > insert time: 427ms
+- testNativeAutoCommitTrue > select time: 461ms
+- testExposedDsl > insert time: 3189ms
+- testExposedDsl > select time: 2402ms
+- testExposedTransactionOnly > insert time: 1296ms
+- testExposedTransactionOnly > select time: 1284ms
+- testExposedDao > insert time: 2487ms
+- testExposedDao > select time: 1639ms
+- hibernate dao > insert time: 2253ms
+- hibernate dao > select time: 798ms
 
-exposed框架<br/>
-testExposed(database) // insert time: -, elect time: -
+# 3
+- testNativeAutoCommitFalse > insert time: 392ms
+- testNativeAutoCommitFalse > select time: 246ms
+- testNativeAutoCommitTrue > insert time: 527ms
+- testNativeAutoCommitTrue > select time: 505ms
+- testExposedDsl > insert time: 3259ms
+- testExposedDsl > select time: 2674ms
+- testExposedTransactionOnly > insert time: 1452ms
+- testExposedTransactionOnly > select time: 1429ms
+- testExposedDao > insert time: 2788ms
+- testExposedDao > select time: 1704ms
+- hibernate dao > insert time: 2145ms
+- hibernate dao > select time: 834ms

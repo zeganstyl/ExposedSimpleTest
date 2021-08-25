@@ -16,8 +16,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.32.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.32.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.32.1")
-    implementation("mysql:mysql-connector-java:8.0.26")
+    implementation("com.h2database:h2:1.4.200")
     implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("org.hibernate:hibernate-core:5.5.6.Final")
 
 }
 
