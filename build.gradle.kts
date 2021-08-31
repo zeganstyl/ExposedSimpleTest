@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.5.30"
 }
 
 group = "com.miaomiaomiao.test.exposed-simple-test"
@@ -12,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
     implementation("org.jetbrains.exposed:exposed-core:0.32.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.32.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.32.1")
@@ -20,12 +17,9 @@ dependencies {
     implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.hibernate:hibernate-core:5.5.6.Final")
 
-}
+//    val log4jVer = "2.14.1"
+//    implementation("org.apache.logging.log4j:log4j-api:$log4jVer")
+//    implementation("org.apache.logging.log4j:log4j-core:$log4jVer")
 
-tasks.test {
-    useJUnit()
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
+    implementation("com.zaxxer:HikariCP:4.0.2")
 }

@@ -32,7 +32,7 @@ fun testExposedDsl(database: Database) {
             commit()
         }
     }
-    println("testExposedDsl > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    println("- exposed dsl > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
     sw = Stopwatch.createStarted()
     repeat(10000) { i ->
         transaction(database) {
@@ -41,7 +41,7 @@ fun testExposedDsl(database: Database) {
             }.firstOrNull()?.get(ExposedTable.value)
         }
     }
-    println("testExposedDsl > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    println("- exposed dsl > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
 }
 
 fun testExposedTransactionOnly(database: Database) {
@@ -51,7 +51,7 @@ fun testExposedTransactionOnly(database: Database) {
             exec("INSERT INTO test_table (`key`,`value`) VALUES ($it, true)")
         }
     }
-    println("testExposedTransactionOnly > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    println("- exposed transaction only > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
     sw = Stopwatch.createStarted()
     repeat(10000) {
         transaction(database) {
@@ -62,7 +62,7 @@ fun testExposedTransactionOnly(database: Database) {
             }
         }
     }
-    println("testExposedTransactionOnly > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    println("- exposed transaction only > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
 }
 
 fun testExposedDao(database: Database) {
@@ -75,12 +75,12 @@ fun testExposedDao(database: Database) {
             }
         }
     }
-    println("testExposedDao > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    println("- exposed dao > insert time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
     sw = Stopwatch.createStarted()
     for (i in 1..10000) {
         transaction(database) {
             ExposedEntity[i].value
         }
     }
-    println("testExposedDao > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
+    println("- exposed dao > select time: ${sw.elapsed(TimeUnit.MILLISECONDS)}ms")
 }
