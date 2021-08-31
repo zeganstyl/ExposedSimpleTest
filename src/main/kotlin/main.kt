@@ -6,8 +6,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.Connection
 import java.sql.DriverManager
 import java.util.concurrent.TimeUnit
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 
 /**
  * @author  MeowRay, zeganstyl
@@ -16,23 +14,8 @@ import com.zaxxer.hikari.HikariDataSource
  */
 fun main() {
     val dbUrl = "jdbc:h2:file:./db-test"
-    val useHikari = false
-
-    val database = if (useHikari) {
-        val config = HikariConfig().apply {
-            driverClassName = "org.h2.Driver"
-            jdbcUrl = "jdbc:h2:file:./db-test"
-            maximumPoolSize = 3
-            isAutoCommit = false
-            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-            validate()
-        }
-
-        Database.connect(HikariDataSource(config))
-    } else {
-        val pool = JdbcConnectionPool.create(dbUrl, "", "")
-        Database.connect(pool)
-    }
+    val pool = JdbcConnectionPool.create(dbUrl, "", "")
+    val database = Database.connect(pool)
 
     // warm
     resetTable(database)
