@@ -17,9 +17,5 @@ dependencies {
     implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.hibernate:hibernate-core:5.5.6.Final")
 
-//    val log4jVer = "2.14.1"
-//    implementation("org.apache.logging.log4j:log4j-api:$log4jVer")
-//    implementation("org.apache.logging.log4j:log4j-core:$log4jVer")
-
     implementation("com.zaxxer:HikariCP:4.0.2")
 }

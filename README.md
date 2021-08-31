@@ -2,46 +2,46 @@
 
 # With HikariCP
 ### 1
-- plain jdbc autoCommit=false > insert time: 782ms
-- plain jdbc autoCommit=false > select time: 286ms
-- plain jdbc autoCommit=true > insert time: 611ms
-- plain jdbc autoCommit=true > select time: 479ms
-- exposed dsl > insert time: 1612ms
-- exposed dsl > select time: 1010ms
-- exposed transaction only > insert time: 544ms
-- exposed transaction only > select time: 633ms
-- exposed dao > insert time: 1750ms
-- exposed dao > select time: 977ms
-- hibernate dao > insert time: 2193ms
-- hibernate dao > select time: 801ms
+- plain jdbc autoCommit=false > insert time: 384ms
+- plain jdbc autoCommit=false > select time: 265ms
+- plain jdbc autoCommit=true > insert time: 445ms
+- plain jdbc autoCommit=true > select time: 490ms
+- exposed dsl > insert time: 1834ms
+- exposed dsl > select time: 1428ms
+- exposed transaction only > insert time: 620ms
+- exposed transaction only > select time: 679ms
+- exposed dao > insert time: 1782ms
+- exposed dao > select time: 1211ms
+- hibernate dao > insert time: 2200ms
+- hibernate dao > select time: 744ms
 ___
 ### 2
-- plain jdbc autoCommit=false > insert time: 363ms
-- plain jdbc autoCommit=false > select time: 198ms
-- plain jdbc autoCommit=true > insert time: 476ms
-- plain jdbc autoCommit=true > select time: 432ms
-- exposed dsl > insert time: 1543ms
-- exposed dsl > select time: 853ms
-- exposed transaction only > insert time: 566ms
-- exposed transaction only > select time: 595ms
-- exposed dao > insert time: 1640ms
-- exposed dao > select time: 1023ms
-- hibernate dao > insert time: 2077ms
-- hibernate dao > select time: 782ms
+- plain jdbc autoCommit=false > insert time: 332ms
+- plain jdbc autoCommit=false > select time: 213ms
+- plain jdbc autoCommit=true > insert time: 419ms
+- plain jdbc autoCommit=true > select time: 468ms
+- exposed dsl > insert time: 2381ms
+- exposed dsl > select time: 1616ms
+- exposed transaction only > insert time: 690ms
+- exposed transaction only > select time: 775ms
+- exposed dao > insert time: 1659ms
+- exposed dao > select time: 1290ms
+- hibernate dao > insert time: 2295ms
+- hibernate dao > select time: 922ms
 ___
 ### 3
-- plain jdbc autoCommit=false > insert time: 427ms
-- plain jdbc autoCommit=false > select time: 220ms
-- plain jdbc autoCommit=true > insert time: 432ms
-- plain jdbc autoCommit=true > select time: 390ms
-- exposed dsl > insert time: 1394ms
-- exposed dsl > select time: 1011ms
-- exposed transaction only > insert time: 519ms
-- exposed transaction only > select time: 667ms
-- exposed dao > insert time: 1493ms
-- exposed dao > select time: 827ms
-- hibernate dao > insert time: 2170ms
-- hibernate dao > select time: 786ms
+- plain jdbc autoCommit=false > insert time: 422ms
+- plain jdbc autoCommit=false > select time: 234ms
+- plain jdbc autoCommit=true > insert time: 438ms
+- plain jdbc autoCommit=true > select time: 461ms
+- exposed dsl > insert time: 1841ms
+- exposed dsl > select time: 1265ms
+- exposed transaction only > insert time: 547ms
+- exposed transaction only > select time: 596ms
+- exposed dao > insert time: 1469ms
+- exposed dao > select time: 994ms
+- hibernate dao > insert time: 2283ms
+- hibernate dao > select time: 889ms
 ___
 # Without HikariCP
 ### 1
